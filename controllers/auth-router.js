@@ -16,6 +16,16 @@ router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
   res.status(200).redirect("/home");
 });
 
+// Login with facebook
+router.get('/facebook', passport.authenticate('facebook', {
+  scope:['public_profile,email']
+}));
+
+// Facebook login redirect
+router.get('/facebook/redirect', passport.authenticate('facebook'),(req,res) => {
+  res.status.redirect('/home');
+})
+
 // register manually
 router.post("/register", async (req, res) => {
   let user = req.body;
