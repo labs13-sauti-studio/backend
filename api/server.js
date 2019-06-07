@@ -9,7 +9,7 @@ const UsersRouter = require("../controllers/users-router");
 const WorkflowsRouter = require('../controllers/workflows-router')
 const AuthRouter = require("../controllers/auth-router");
 const authCheck = require("../controllers/authCheck");
-
+const ProfileRouter = require('../controllers/profile-router')
 //middleware
 serverConfig(server);
 
@@ -47,6 +47,9 @@ server.use("/workflows", WorkflowsRouter)
 server.get("/", (req, res) => {
   res.send(`We're live! Please Login.`);
 });
+
+// Profile routes
+server.use('/profile', authCheck, ProfileRouter)
 
 server.get("/home", (req, res) => {
   res.status(200).json({ message: "Success" });
