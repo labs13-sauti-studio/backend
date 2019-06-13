@@ -1,5 +1,8 @@
 {
-  "extends": [
-    "wesbos"
-  ]
+  "extends": ["wesbos"],
+  "rules": {
+    "camelcase": "off",
+    "no-unused-vars": "off",
+    "no-sequences": "off"
+  }
 }

@@ -14,7 +14,7 @@ function createUser() {
 }
 
 const userList = [];
-
+/* eslint no-plusplus: ["error", { "allowForLoopAfterthoughts": true }] */
 for (let i = 0; i < 100; i++) {
   userList.push(createUser());
 }

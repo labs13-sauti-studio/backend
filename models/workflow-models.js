@@ -1,17 +1,7 @@
 const db = require('../database/dbConfig');
 
-module.exports = {
-  find,
-  userFlows,
-  getBy,
-  getById,
-  add,
-  updateWorkflow,
-  removeWorkflow,
-};
-
 function find() {
-  return db('workflows')
+  return db('workflows');
 }
 
 function userFlows(userId) {
@@ -41,10 +31,17 @@ function updateWorkflow(id, changes) {
 }
 
 function removeWorkflow(id) {
-    return db('workflows').where('id', id).del()
+  return db('workflows')
+    .where('id', id)
+    .del();
 }
-// // select
 
-// SELECT UsersWorkflows.id
-// FROM UsersWorkflows
-// INNER JOIN WorkFlow ON  UsersWorkflows.workflow_id = workflow.id
+module.exports = {
+  find,
+  userFlows,
+  getBy,
+  getById,
+  add,
+  updateWorkflow,
+  removeWorkflow,
+};

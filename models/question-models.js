@@ -1,15 +1,5 @@
 const db = require('../database/dbConfig');
 
-module.exports = {
- find,
- getBy,
- getById,
- add,
- updateQuestion,
- removeQuestion
-
-}
-
 function find() {
   return db('questions');
 }
@@ -31,10 +21,22 @@ function add(client) {
 }
 
 function updateQuestion(id, changes) {
-    return db('questions').where({ id }).update(changes)
-
+  return db('questions')
+    .where({ id })
+    .update(changes);
 }
 
 function removeQuestion(id) {
-    return db('questions').where('id',id).del();
+  return db('questions')
+    .where('id', id)
+    .del();
 }
+
+module.exports = {
+  find,
+  getBy,
+  getById,
+  add,
+  updateQuestion,
+  removeQuestion,
+};

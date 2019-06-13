@@ -1,10 +1,5 @@
 const db = require('../database/dbConfig');
 
-module.exports = {
-  getById,
-  updateUser,
-};
-
 function getById(id) {
   return db('users').where({ id });
 }
@@ -14,3 +9,8 @@ function updateUser(id, info) {
     .where({ id })
     .update(info);
 }
+
+module.exports = {
+  getById,
+  updateUser,
+};

@@ -1,13 +1,5 @@
 const db = require('../database/dbConfig');
 
-module.exports = {
-  find,
-  getBy,
-  getById,
-  add,
-  getByEmail,
-};
-
 function find() {
   return db('users');
 }
@@ -29,3 +21,11 @@ function getById(id) {
 function add(user) {
   return db('users').insert(user, 'id');
 }
+
+module.exports = {
+  find,
+  getBy,
+  getById,
+  add,
+  getByEmail,
+};
