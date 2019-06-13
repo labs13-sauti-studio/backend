@@ -1,8 +1,16 @@
 {
+<<<<<<< HEAD
   "extends": ["wesbos"],
   "rules": {
     "camelcase": "off",
     "no-unused-vars": "off",
     "no-sequences": "off"
+=======
+  "extends": [
+    "wesbos"
+  ],
+  "rules": {
+    "camelcase": "off"
+>>>>>>> master
   }
 }
