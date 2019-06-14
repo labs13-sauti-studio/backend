@@ -37,17 +37,12 @@ function getSessionInfo(body) {
   return session;
 }
 // DYNAMIC ROUTE HANDLER
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
+  try{
   // create a new menu for each request
   const menu = createMenu();
   const session = getSessionInfo(req.body);
-  const ussdSess = UssdModel.addSession(session.sessionId)
-    .then(response => {
-      console.log(response);
-    })
-    .catch(e => {
-      res.status(500).json(e);
-    });
+  const ussdSess = await UssdModel.addSession(session.sessionId)
   // construct questions and options object for a given flow
   const newScreen = new BuildScreen(screen);
 
@@ -109,6 +104,9 @@ router.post('/', (req, res) => {
   menu.run(req.body, msg => {
     res.send(msg);
   });
+    }catch(e=>{
+  res.status(500).json(message: 'Unable to register session',e)
+})
 });
 
 router.get('/', (req, res) => {
