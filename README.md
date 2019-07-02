@@ -33,6 +33,9 @@ Why did you choose this framework?
 
 # Data Model
 
+![Sauti Studio Database Model](https://i.imgur.com/Nb8h0Pp.png)
+
+
 #### ORGANIZATIONS
 
 ---
