@@ -18,11 +18,18 @@ function getBy(filter) {
   return db('workflows').where(filter);
 }
 
-function getById(id) {
-  return db('workflows')
+const getById = async ({ id }) => {
+  const workflow = await db('workflows')
     .where({ id })
     .first();
-}
+
+  const { category } = await db('categories')
+    .select('category')
+    .where({ id: workflow.category })
+    .first();
+
+  return { ...workflow, category };
+};
 
 const add = async ({ user_id, name, category, client_id }) => {
   const [id] = await db('categories')

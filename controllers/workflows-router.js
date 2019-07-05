@@ -29,11 +29,9 @@ router.get('/', restricted, async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  const { user } = req;
-  const workflow = await Workflows.getBy({
+  const workflow = await Workflows.getById({
     id: req.params.id,
-    user_id: user.id,
-  }).first();
+  });
 
   try {
     if (!workflow) {
