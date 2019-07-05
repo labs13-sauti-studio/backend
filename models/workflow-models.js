@@ -1,22 +1,18 @@
 const db = require('../database/dbConfig');
 
-module.exports = {
-  find,
-  userFlows,
-  getBy,
-  getById,
-  add,
-  updateWorkflow,
-  removeWorkflow,
+const find = filter => db('workflows').where(filter);
+
+const userFlows = async userId => {
+  const {
+    rows,
+  } = await db.raw(`SELECT workflows.id, workflows.user_id, name, categories.category
+          FROM workflows
+          JOIN categories
+          ON workflows.category = categories.id
+          WHERE workflows.user_id = ${userId};`);
+
+  return rows;
 };
-
-function find(filter) {
-  return db('workflows').where(filter);
-}
-
-function userFlows(userId) {
-  return db('workflows').where({ user_id: userId });
-}
 
 function getBy(filter) {
   return db('workflows').where(filter);
@@ -28,13 +24,17 @@ function getById(id) {
     .first();
 }
 
-function add(workflow) {
-  console.log('TCL: add -> workflow', workflow);
-  return db('workflows')
-    .insert(workflow, 'id')
-    .then(() => db('workflows').where({ user_id: workflow.user_id }))
+const add = async ({ user_id, name, category, client_id }) => {
+  const [id] = await db('categories')
+    .insert({ user_id, category })
+    .returning('id');
+
+  await db('workflows')
+    .insert({ user_id, name, category: id, client_id })
     .catch(err => console.error(err));
-}
+
+  return userFlows(user_id);
+};
 
 function updateWorkflow(id, changes) {
   return db('workflows')
@@ -47,8 +47,12 @@ function removeWorkflow(id) {
     .where('id', id)
     .del();
 }
-// // select
-
-// SELECT UsersWorkflows.id
-// FROM UsersWorkflows
-// INNER JOIN WorkFlow ON  UsersWorkflows.workflow_id = workflow.id
+module.exports = {
+  find,
+  userFlows,
+  getBy,
+  getById,
+  add,
+  updateWorkflow,
+  removeWorkflow,
+};

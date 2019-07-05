@@ -2,37 +2,6 @@ const db = require('../database/dbConfig');
 const Promise = require('bluebird');
 /* Example of object
 { id: 1, title: 'example', parent: null, workflow: 1, index: 1 } */
-const makeTree = items => {
-  let familyTree = [];
-  const parents = items.filter(item => !item.parent);
-
-  parents.forEach((parent, i) => {
-    let children = items.filter(child => child.parent === parent.id);
-
-    const findChildren = array =>
-      array.forEach(child => {
-        let temp = items.filter(item => item.parent === child.id);
-        if (temp.length > 0) {
-          findChildren(temp);
-          child.children = temp;
-        }
-        return child;
-      });
-
-    findChildren(children);
-
-    familyTree[i] = { ...parent, children };
-  });
-
-  familyTree.map(obj => {
-    if (obj.children.length === 0) {
-      delete obj.children;
-    }
-    return obj;
-  });
-
-  return familyTree;
-};
 
 const getIndex = async ({ parent: filter, workflow }) => {
   let parent = filter;
@@ -45,12 +14,10 @@ const getIndex = async ({ parent: filter, workflow }) => {
   return Number(index) + 1;
 };
 
-const tree = async filter => makeTree(await db('responses').where(filter));
-
 const find = filter =>
   db('responses')
-    .select('id', 'title', 'parent', 'workflow')
-    .where(filter);
+    .where(filter)
+    .orderBy('index', 'asc');
 
 const getById = id => find({ id }).first();
 
@@ -66,12 +33,17 @@ const add = async values => {
   };
 };
 
-const update = values =>
-  db('responses')
+const update = async values => {
+  const [id] = await db('responses')
     .where({ id: values.id })
     .update(values)
-    .returning('id')
-    .then(([id]) => getById(id));
+    .returning('id');
+
+  return {
+    added: await getById(id),
+    total: await find({ workflow: values.workflow }),
+  };
+};
 
 const save = values =>
   db('responses')
@@ -93,7 +65,6 @@ const remove = async id => {
 
 module.exports = {
   find,
-  tree,
   getById,
   add,
   update,

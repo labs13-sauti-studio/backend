@@ -46,8 +46,9 @@ router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { title, parent, workflow, index } = req.body;
   try {
-    const values = { id, title, parent, workflow, index };
-    res.status(200).json(await Responses.update(values));
+    res
+      .status(200)
+      .json(await Responses.update({ id, title, parent, workflow, index }));
   } catch (error) {
     res.status(500).json({
       message: `Unable to update the question ${id}`,

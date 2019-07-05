@@ -102,7 +102,6 @@ router.post('/', async (req, res) => {
       run: async () => {
         await menu.session.set('response', Number(menu.val));
         const rawWorkflow = await menu.session.get('workflow');
-        console.log(await rawWorkflow);
         const workflow = Number(rawWorkflow.workflow);
         const input = Number(menu.val);
 

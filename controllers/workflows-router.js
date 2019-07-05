@@ -28,25 +28,6 @@ router.get('/', restricted, async (req, res) => {
   }
 });
 
-// GET SPECEFIC ID OF WORKFLOW
-// router.get('/:id', async (req, res) => {
-//   const workflows = await Workflows.getBy({
-//     id: req.params.id,
-//     user_id: req.user.id,
-//   });
-//   try {
-//     if (workflows) {
-//       res.status(200).json(workflows);
-//     } else {
-//       res
-//         .status(404)
-//         .json({ message: 'workflow with taht ID does not exist.' });
-//     }
-//   } catch (error) {
-//     res.status(500).json({ error: ' Error retrieving that workflow' });
-//   }
-// });
-
 router.get('/:id', async (req, res) => {
   const { user } = req;
   const workflow = await Workflows.getBy({
@@ -72,7 +53,7 @@ router.get('/:id', async (req, res) => {
 
 // POSTS THE WORKFLOW
 router.post('/', (req, res) => {
-  const { name, area_code, category, client_id, question_id } = req.body;
+  const { name, category, client_id } = req.body;
 
   if (!req.user)
     res.status(400).json({ message: 'You must be logged in to do that' });
